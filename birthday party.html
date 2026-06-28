@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday 🎂</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+height:100vh;
+overflow:hidden;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#ff6ec4,#7873f5);
+}
+
+.card{
+width:90%;
+max-width:420px;
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(12px);
+padding:35px 25px;
+border-radius:25px;
+text-align:center;
+color:white;
+box-shadow:0 10px 40px rgba(0,0,0,.3);
+z-index:10;
+}
+
+h1{
+font-size:34px;
+text-shadow:0 0 15px white;
+animation:glow 2s infinite alternate;
+}
+
+@keyframes glow{
+from{ text-shadow:0 0 10px #fff;}
+to{ text-shadow:0 0 25px #fff,0 0 40px gold;}
+}
+
+.cake{
+font-size:80px;
+margin:20px 0;
+animation:bounce 1.5s infinite;
+}
+
+@keyframes bounce{
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(-15px);}
+}
+
+p{
+font-size:18px;
+line-height:1.6;
+margin-top:15px;
+}
+
+button{
+margin-top:25px;
+padding:14px 30px;
+border:none;
+border-radius:50px;
+background:white;
+color:#ff4f8b;
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
+transition:.3s;
+}
+
+button:hover{
+transform:scale(1.08);
+background:#ffe082;
+}
+
+.balloon{
+position:absolute;
+bottom:-150px;
+font-size:40px;
+animation:float 10s linear infinite;
+}
+
+@keyframes float{
+0%{
+transform:translateY(0);
+}
+100%{
+transform:translateY(-120vh);
+}
+}
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+pointer-events:none;
+}
+</style>
+
+</head>
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="card">
+
+<h1>🎉 Happy Birthday! 🎉</h1>
+
+<div class="cake">🎂</div>
+
+<p>
+Wishing you endless happiness, good health,
+success and lots of unforgettable memories.
+May your special day be filled with love,
+laughter and joy! ❤️
+</p>
+
+<button onclick="celebrate()">
+🎁 Celebrate!
+</button>
+
+</div>
+
+<div class="balloon" style="left:10%;animation-delay:0s;">🎈</div>
+<div class="balloon" style="left:25%;animation-delay:2s;">🎈</div>
+<div class="balloon" style="left:45%;animation-delay:4s;">🎈</div>
+<div class="balloon" style="left:70%;animation-delay:1s;">🎈</div>
+<div class="balloon" style="left:90%;animation-delay:3s;">🎈</div>
+
+<script>
+const canvas=document.getElementById("confetti");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let pieces=[];
+
+function random(min,max){
+return Math.random()*(max-min)+min;
+}
+
+function createConfetti(){
+
+pieces=[];
+
+for(let i=0;i<180;i++){
+
+pieces.push({
+x:random(0,canvas.width),
+y:random(-canvas.height,0),
+r:random(4,8),
+d:random(2,6),
+color:hsl(${Math.random()*360},100%,60%),
+tilt:random(-10,10)
+});
+
+}
+
+}
+
+function draw(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+pieces.forEach(p=>{
+
+ctx.beginPath();
+ctx.fillStyle=p.color;
+ctx.fillRect(p.x,p.y,p.r,p.r);
+
+});
+
+update();
+
+requestAnimationFrame(draw);
+
+}
+
+function update(){
+
+pieces.forEach(p=>{
+
+p.y+=p.d;
+p.x+=Math.sin(p.y*0.02);
+
+if(p.y>canvas.height){
+p.y=-10;
+p.x=random(0,canvas.width);
+}
+
+});
+
+}
+
+createConfetti();
+draw();
+
+function celebrate(){
+
+createConfetti();
+
+document.querySelector(".card").animate([
+{transform:"scale(1)"},
+{transform:"scale(1.08)"},
+{transform:"scale(1)"}
+],{
+duration:600
+});
+
+}
+
+window.onresize=()=>{
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+};
+</script>
+
+</body>
+</html>
